@@ -1,0 +1,7 @@
+# Ignore data directories
+relay-data
+caddy-data
+tor-data
+
+# Ignore configuration files
+config.toml

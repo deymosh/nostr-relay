@@ -1,0 +1,8 @@
+{
+	email your@mail.com #Mail used to generate the HTTPS certificate.
+}
+
+# Replace your.relay.domain by the domain name of your choice!
+{$RELAY_DOMAIN} {
+    reverse_proxy proxy-dashboard:3000
+}
