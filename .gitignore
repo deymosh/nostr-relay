@@ -1,9 +1,6 @@
 # Ignore data directories
-caddy-data
-relay-data
-strfry-db
-tor-data
 strfry
+data
 
 # Ignore configuration files
 config.toml

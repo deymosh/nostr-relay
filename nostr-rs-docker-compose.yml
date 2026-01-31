@@ -9,9 +9,7 @@ services:
     volumes:
       - ./config.toml:/usr/src/app/config.toml
       - ./proxy-dashboard/public/favicon.ico:/usr/src/app/favicon.ico
-      - type: bind
-        source: ./relay-data
-        target: /usr/src/app/db
+      - ./data/nostr-rs-relay:/usr/src/app/db
     networks:
       - caddy
 
@@ -46,8 +44,8 @@ services:
       - caddy
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./caddy-data/data:/data
-      - ./caddy-data/config:/config
+      - ./data/caddy/data:/data/caddy
+      - ./data/caddy/config:/config/caddy
     restart: unless-stopped
 
 networks:

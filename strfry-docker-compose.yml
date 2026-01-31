@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./strfry.conf:/etc/strfry.conf
-      - ./strfry-db:/app/strfry-db
+      - ./data/strfry-db:/app/strfry-db
     networks:
       - caddy
 
@@ -29,8 +29,8 @@ services:
       - caddy
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./caddy-data/data:/data
-      - ./caddy-data/config:/config
+      - ./data/caddy/data:/data/caddy
+      - ./data/caddy/config:/config/caddy
 
 networks:
   caddy:
