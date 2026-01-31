@@ -1,0 +1,37 @@
+services:
+
+  # Strfry Relay Service
+  strfry-relay:
+    build: strfry
+    image: strfry-relay
+    container_name: strfry-relay
+    restart: unless-stopped
+    volumes:
+      - ./strfry.conf:/etc/strfry.conf
+      - ./strfry-db:/app/strfry-db
+    networks:
+      - caddy
+
+  # Caddy Service
+  caddy:
+    image: caddy:2-alpine
+    container_name: strfry-caddy
+    restart: unless-stopped
+    environment:
+      # Default domain "localhost" can be changed to your public domain.
+      RELAY_DOMAIN: "localhost"
+      RELAY_HOST: "strfry-relay"
+      RELAY_PORT: "7777"
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy-data/data:/data
+      - ./caddy-data/config:/config
+
+networks:
+  caddy:
+    name: caddy

@@ -2,7 +2,6 @@
 set -e
 
 echo "[*] Running as user: $(whoami)"
-echo "[*] Relay domain: $RELAY_DOMAIN"
 echo "[*] Relay host: $RELAY_HOST"
 echo "[*] Relay port: $RELAY_PORT"
 echo "[*] Tor enabled: $TOR_ENABLED"

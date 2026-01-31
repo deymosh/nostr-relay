@@ -1,8 +1,8 @@
 {
-	email your@mail.com #Mail used to generate the HTTPS certificate.
+	email your@mail.com
 }
 
-# Replace your.relay.domain by the domain name of your choice!
+# Relay domain configured in the docker compose files
 {$RELAY_DOMAIN} {
-    reverse_proxy proxy-dashboard:3000
+	reverse_proxy {$RELAY_HOST}:{$RELAY_PORT}
 }
