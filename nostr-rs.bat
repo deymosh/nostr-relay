@@ -14,46 +14,47 @@ set "DST_CONF=%BAT_DIR%\config.toml"
 
 REM --- Step 1: Init submodule if missing ---
 if not exist "%REPO_DIR%" (
-    echo Inicializando submodulo nostr-rs-relay...
+    echo Initializing nostr-rs-relay submodule...
     git submodule update --init --recursive
     if errorlevel 1 (
-        echo Error inicializando submodulo
+        echo Error initializing submodule
         pause
         exit /b 1
     )
 ) else (
-    echo Repo nostr-rs-relay ya existe.
+    echo nostr-rs-relay submodule already exists. Updating...
+    git submodule update --recursive
+    if errorlevel 1 (
+        echo Error updating submodule
+        pause
+        exit /b 1
+    )
 )
 
 REM --- Step 2: Copy default config if missing ---
 if not exist "%DST_CONF%" (
     copy "%SRC_CONF%" "%DST_CONF%" >nul
-    echo Config por defecto copiada a %DST_CONF%
-    echo Puedes cambiar los valores siguientes directamente en el archivo:
-    echo - pubkey: clave admin (hex)
-    echo - name: nombre del relay
-    echo - description: descripcion del relay
-    echo - relay_icon: URL del icono
+    echo Default config copied to %DST_CONF%
 ) else (
-    echo Config existente encontrada en "%DST_CONF%"
-    echo Puedes cambiar los valores siguientes directamente en el archivo:
-    echo - pubkey: clave admin (hex)
-    echo - name: nombre del relay
-    echo - description: descripcion del relay
-    echo - relay_icon: URL del icono
+    echo Existing config found at "%DST_CONF%"
 )
+echo You can edit the following values directly in the file:
+echo - pubkey: admin pubkey (hex format)
+echo - name: relay name
+echo - description: relay description
+echo - relay_icon: relay icon URL
 
 REM --- Step 3: Run Docker Compose ---
 echo.
 echo ==========================================
-echo   Arrancando NOSTR-RS RELAY con Docker Compose
+echo   Starting NOSTR-RS RELAY with Docker Compose
 echo ==========================================
 echo.
 
 cd /d "%BAT_DIR%"
 docker compose -p nostr-rs -f nostr-rs-docker-compose.yml up --build
 if errorlevel 1 (
-    echo Error ejecutando Docker Compose
+    echo Error running Docker Compose
     pause
     exit /b 1
 )
