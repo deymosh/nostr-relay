@@ -1,8 +1,0 @@
-{
-	email your@mail.com
-}
-
-# Relay domain configured in the docker compose files
-{$RELAY_DOMAIN} {
-	reverse_proxy {$RELAY_HOST}:{$RELAY_PORT}
-}

@@ -1,0 +1,38 @@
+{
+	email your@mail.com
+}
+
+# Common nostr relay configuration (WebSocket, nostr+json, and reverse proxy)
+(nostr_relay) {
+	# Handle WebSocket connections (for live event streaming)
+	@websockets {
+		header Connection *Upgrade*
+		header Upgrade websocket
+	}
+
+	# Handle nostr+json MIME type
+	@nostr {
+		header Accept application/nostr+json
+	}
+
+	# Reverse proxy WebSocket and nostr+json requests to the relay
+	reverse_proxy @websockets {$RELAY_HOST}:{$RELAY_PORT}
+	reverse_proxy @nostr {$RELAY_HOST}:{$RELAY_PORT}
+}
+
+# Clearnet configuration (localhost or public domain)
+{$RELAY_DOMAIN} {
+	# Enable gzip compression
+	encode gzip
+
+	# Import the common relay configuration
+	import nostr_relay
+
+	# Fallback: reverse proxy other requests to relay
+	reverse_proxy {$RELAY_HOST}:{$RELAY_PORT}
+
+	# Logging
+	log {
+		output stdout
+	}
+}

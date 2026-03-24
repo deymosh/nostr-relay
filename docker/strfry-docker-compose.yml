@@ -1,0 +1,43 @@
+services:
+
+  # Strfry Relay Service
+  strfry-relay:
+    build: ../strfry
+    image: strfry-relay
+    container_name: strfry-relay
+    restart: unless-stopped
+    ports:
+      - "7777:7777"
+    volumes:
+      - ../strfry.conf:/etc/strfry.conf
+      - ../data/strfry-db:/app/strfry-db
+    networks:
+      nostr-relay-net:
+        ipv4_address: 172.20.0.2
+
+  # Tor Hidden Service
+  tor:
+    image: lncm/tor:latest
+    container_name: strfry-tor
+    restart: unless-stopped
+    user: "root"
+    entrypoint: /init-tor.sh
+    volumes:
+      - tor-data:/var/lib/tor
+      - ./torrc.strfry:/etc/tor/torrc
+      - ./init-tor.sh:/init-tor.sh:ro
+    networks:
+      nostr-relay-net:
+        ipv4_address: 172.20.0.3
+
+networks:
+  nostr-relay-net:
+    name: nostr-relay-net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  tor-data:
+    name: tor-data

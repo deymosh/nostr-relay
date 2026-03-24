@@ -1,0 +1,5 @@
+SocksPort 9050
+DataDirectory /var/lib/tor
+
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 172.20.0.2:8080
